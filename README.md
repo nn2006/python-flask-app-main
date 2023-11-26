@@ -28,28 +28,6 @@ To visualize the spatial distribution of the collected data, we will implement h
 
 language-python
  Copy code
-import matplotlib.pyplot as plt
-import numpy as np
-
-# Generate sample data
-x = np.random.rand(100)
-y = np.random.rand(100)
-z = np.random.rand(100)
-
-# Create a scatter plot with a color map
-plt.scatter(x, y, c=z, cmap='hot')
-
-# Add a color bar
-plt.colorbar()
-
-# Set labels and title
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.title('Heatmap')
-
-# Show the plot
-plt.show()
-In this code, we generate sample data for the x, y, and z coordinates. We then create a scatter plot with a color map using the scatter function from Matplotlib. The c parameter is set to the z values to determine the color of each point. We add a color bar to indicate the color scale and set labels and a title for the plot.
 
  #3: Temporal Correlation
 To implement temporal correlation, we will allow users to navigate through historical data and observe how the readings have changed over time. This can be achieved by storing the collected data in a database and retrieving it based on user input. Here's an example of how to implement this using the SQLite database in Python:
