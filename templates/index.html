@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensor Data Map</title>
+    <!-- Leaflet.js CDN link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map { height: 500px; }
+    </style>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        </style>
+</head>
+<body>
+    <!-- Date range form -->
+    <form id="dateRangeForm">
+        <label for="fromDate">From:</label>
+        <input type="datetime-local" id="fromDate" name="fromDate">
+
+        <label for="toDate">To:</label>
+        <input type="datetime-local" id="toDate" name="toDate">
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Sensor data grid/table -->
+    <table id="sensorDataTable">
+        <thead>
+            <tr>
+                <th>Sensor ID</th>
+                
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Temperature</th>
+                <th>Pressure</th>
+                <th>Steam Injection</th>
+            </tr>
+        </thead>
+        <tbody id="sensorDataBody"></tbody>
+    </table>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Modal for sensor details (similar to previous examples) -->
+    <!-- ... -->
+
+    <script>
+        // Function to initialize Leaflet map (similar to previous examples)
+        // ...
+
+        // Handle form submission for date range selection
+        document.getElementById('dateRangeForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const fromDateInput = document.getElementById('fromDate').value;
+            const toDateInput = document.getElementById('toDate').value;
+
+            // Format dates in YYYY-MM-DD HH:MM:SS format
+            const fromDate = fromDateInput.replace('T', ' ') + ':00';
+            const toDate = toDateInput.replace('T', ' ') + ':00';
+
+            fetch(`/get-sensor-data?from=${fromDate}&to=${toDate}`)
+                .then(response => response.json())
+                .then(sensorData => {
+                    console.log('Historical sensor data:', sensorData);
+                    
+                    // Render sensor data as a grid/table
+                    const sensorDataBody = document.getElementById('sensorDataBody');
+                    sensorDataBody.innerHTML = '';
+                    sensorData.forEach(sensor => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${sensor.id}</td>
+                           
+                            <td>${sensor.latitude}</td>
+                            <td>${sensor.longitude}</td>
+                            <td>${sensor.temperature}</td>
+                            <td>${sensor.pressure}</td>
+                            <td>${sensor.steam_injection}</td>
+                        `;
+                        sensorDataBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching historical sensor data:', error));
+        });
+
+        // Initialize the map when the DOM is ready (similar to previous examples)
+        // ...
+    </script>
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Modal for sensor details -->
+    <div id="sensorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="sensorDetails"></p>
+        </div>
+    </div>
+
+    <script>
+        // Function to initialize Leaflet map
+        function initMap() {
+            const map = L.map('map').setView([0, 0], 2); // Center map and set zoom level
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+            }).addTo(map);
+
+            // Fetch sensor data
+            fetch('/get-sensor-data')
+                .then(response => response.json())
+                .then(sensorData => {
+                    sensorData.forEach(sensor => {
+                        // Define circle marker style based on temperature
+                        let circleColor = '#FFEDA0'; // Default color
+                        if (sensor.temperature > 25) {
+                            circleColor = '#FEB24C'; // Adjust color based on temperature thresholds
+                        }
+                        if (sensor.temperature > 30) {
+                            circleColor = '#FD8D3C';
+                        }
+                        if (sensor.temperature > 35) {
+                            circleColor = '#E31A1C';
+                        }
+
+                        // Add circle marker for each sensor data point
+                        L.circleMarker([sensor.latitude, sensor.longitude], {
+                            radius: 8,
+                            color: circleColor,
+                            fillOpacity: 0.8
+                        }).addTo(map).on('click', function () {
+                            // Open modal with sensor details on marker click
+                            document.getElementById('sensorDetails').innerHTML = `Sensor ID: ${sensor.id}<br>
+                                Latitude: ${sensor.latitude}<br>
+                                Longitude: ${sensor.longitude}<br>
+                                Temperature: ${sensor.temperature}<br>
+                                Pressure: ${sensor.pressure}<br>
+                                Steam Injection: ${sensor.steam_injection}`;
+
+                            // Display the modal
+                            document.getElementById('sensorModal').style.display = 'block';
+                        });
+                    });
+                })
+                .catch(error => console.error('Error fetching sensor data:', error));
+        }
+
+        // Close the modal when clicking the close button
+        document.querySelector('.close').addEventListener('click', function () {
+            document.getElementById('sensorModal').style.display = 'none';
+        });
+
+        // Initialize the map when the DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+        });
+         // Auto-refresh data every 5 seconds
+         setInterval(initMap, 5000);
+    </script>
+</body>
+</html>

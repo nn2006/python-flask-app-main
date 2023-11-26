@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "python-flask-app"
+version = "0.1.0"
+description = "AD_Heatmap Flask app"
+authors = ["Muhammad Adil <nn2006@gmail.com>"]
+readme = "README.md"
+packages = [{include = "python_flask_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Flask = "^2.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
