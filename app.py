@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key' 
 # Function to create a SQLite database and table if they don't exist
 def create_db():
-    conn = sqlite3.connect('2/db/sensor_data.db')
+    conn = sqlite3.connect('app/db/sensor_data.db')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS sensor_readings (
@@ -54,7 +54,7 @@ def logout():
     return redirect('/')
 @app.route('/get-sensor-data')
 def get_sensor_data():
-    conn = sqlite3.connect('2/db/sensor_data.db')
+    conn = sqlite3.connect('app/db/sensor_data.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM sensor_readings')
     sensor_data = cursor.fetchall()
@@ -70,7 +70,7 @@ def get_sensor_data():
 @app.route('/sensor-data', methods=['POST'])
 def add_sensor_data():
     data = request.get_json()
-    conn = sqlite3.connect('2/db/sensor_data.db')
+    conn = sqlite3.connect('app/db/sensor_data.db')
     cursor = conn.cursor()
     cursor.execute('''
         INSERT INTO sensor_readings (latitude, longitude, temperature, pressure, steam_injection)
