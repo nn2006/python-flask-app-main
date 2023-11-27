@@ -7,6 +7,7 @@ COPY ./requirements.txt /python-flask-app-main/
 COPY ./app.py /python-flask-app-main/
 RUN pip install -r requirements.txt
 RUN pip install ldap3
+RUN chmod -R 777 /python-flask-app-main/
 
 
 
