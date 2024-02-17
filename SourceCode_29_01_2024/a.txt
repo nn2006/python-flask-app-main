@@ -1,0 +1,20 @@
+Implementation of Smart City with Cost Effective Solution
+
+
+In this  Article I want to give you the Idea that how we can Implement the smart city with AI Technology but cost effective way, This Article is based on my personal experience so I will share you the proper referencing along with the comprehensive documentation, You will see how we can get maximum by using small technologies to get maximum through put with include Infra, Software, hardware, firmware  and OS lever moreover you are welcome to do critical analysis I will be happy to answer your questions. I believe the frequency is the national resource for the nation This project is based on Internet of things using LoraWAN technology devices designed for long-range communication with low-power devices, all the devices which I will mention is this article are battery operated which can easy talk to the gateways from at least 7-10 Kms. The solution with work on premises as well as on cloud solution 
+
+About me: I am Adil and working for PDO(petroleum development oman) as a contractor I have 20 years of engineering background and with this much experience I will share you my personal experience in terms, how and where the purchase your gateway and devices , now let’s jump into to the software side 1 Lora backed 
+
+Technologies 
+Hardware/Infra
+Oracle Cloud Free Tier(https://www.oracle.com/cloud/free/)        Always Free
+Gateways TEKTELIC gateways    £985.00 
+
+Software/Technology
+
+OS Ubuntu 23.10 or 9.3 Linux/RHEL you can download the image form following link https://developers.redhat.com/content-gateway/file/rhel/Red_Hat_Enterprise_Linux_9.3/rhel-9.3-x86_64-dvd.iso
+
+  
+ 
+Frequency Band  868, 915, 433     Always free
+
